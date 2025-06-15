@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设置 - 盘绣文化</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f5f0;
+            color: #5c4a37;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            padding: 15px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 30px;
+            margin-right: 10px;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            margin-right: 15px;
+            overflow: hidden;
+            border: 2px solid white;
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            position: fixed;
+            left: 0;
+            top: 70px;
+            bottom: 0;
+            box-shadow: 2px 0 15px rgba(0,0,0,0.05);
+            padding: 20px 0;
+            z-index: 900;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            color: #5c4a37;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+        
+        .sidebar-menu li a:hover, 
+        .sidebar-menu li a.active {
+            background-color: rgba(212, 168, 106, 0.1);
+            border-left-color: #d4a86a;
+            color: #8d6e63;
+        }
+        
+        .sidebar-menu li a i {
+            margin-right: 12px;
+            font-size: 18px;
+        }
+        
+        .content {
+            margin-left: 250px;
+            padding: 100px 40px 40px;
+            min-height: 100vh;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee7dd;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            color: #5c4a37;
+            position: relative;
+        }
+        
+        .page-title:after {
+            content: '';
+            position: absolute;
+            bottom: -16px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(to right, #d4a86a, #8d6e63);
+        }
+        
+        /* 设置卡片样式 */
+        .settings-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(212, 168, 106, 0.3);
+        }
+        
+        .settings-title {
+            font-size: 20px;
+            color: #5c4a37;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee7dd;
+            display: flex;
+            align-items: center;
+        }
+        
+        .settings-title i {
+            margin-right: 10px;
+            color: #d4a86a;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #5c4a37;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background-color: #f8f5f0;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #d4a86a;
+            box-shadow: 0 0 0 2px rgba(212, 168, 106, 0.2);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(to right, #d4a86a, #c99646);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(to right, #c99646, #b88435);
+            box-shadow: 0 5px 15px rgba(212, 168, 106, 0.3);
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background: linear-gradient(to right, #d4a86a, #c99646);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .switch-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 200px;
+            }
+            .content {
+                margin-left: 200px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .content {
+                margin-left: 0;
+                padding-top: 80px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="navbar">
+        <nav>
+            <a href="index.html" class="logo">
+                <img src="images/logo.png" alt="盘绣文化">
+                盘绣文化
+            </a>
+            <div class="user-menu">
+                <div class="user-avatar">
+                    <img src="images/user-avatar.jpg" alt="用户头像">
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="sidebar">
+        <ul class="sidebar-menu">
+            <li><a href="personal.html"><i class="fas fa-user-circle"></i> 个人中心</a></li>
+            <li><a href="orders.html"><i class="fas fa-clipboard-list"></i> 我的订单</a></li>
+            <li><a href="downloads.html"><i class="fas fa-download"></i> 素材下载</a></li>
+            <li><a href="invoices.html"><i class="fas fa-file-invoice"></i> 我的发票</a></li>
+            <li><a href="settings.html" class="active"><i class="fas fa-cog"></i> 设置</a></li>
+        </ul>
+    </div>
+    
+    <div class="content">
+        <div class="page-header">
+            <h1 class="page-title"><i class="fas fa-cog"></i> 设置</h1>
+        </div>
+        
+        <div class="settings-card">
+            <h2 class="settings-title"><i class="fas fa-user"></i> 账户设置</h2>
+            <form>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">名字</label>
+                        <input type="text" id="firstName" class="form-control" value="张">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">姓氏</label>
+                        <input type="text" id="lastName" class="form-control" value="三">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">电子邮箱</label>
+                    <input type="email" id="email" class="form-control" value="user@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="phone">手机号码</label>
+                    <input type="tel" id="phone" class="form-control" value="13800138000">
+                </div>
+                <button type="submit" class="btn btn-block">保存更改</button>
+            </form>
+        </div>
+        
+        <div class="settings-card">
+            <h2 class="settings-title"><i class="fas fa-lock"></i> 安全设置</h2>
+            <form>
+                <div class="form-group">
+                    <label for="currentPassword">当前密码</label>
+                    <input type="password" id="currentPassword" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">新密码</label>
+                    <input type="password" id="newPassword" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">确认新密码</label>
+                    <input type="password" id="confirmPassword" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-block">更改密码</button>
+            </form>
+        </div>
+        
+        <div class="settings-card">
+            <h2 class="settings-title"><i class="fas fa-bell"></i> 通知设置</h2>
+            <form>
+                <div class="form-group">
+                    <label class="switch-label">
+                        <span>订单通知</span>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="switch-label">
+                        <span>促销信息</span>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="switch-label">
+                        <span>系统消息</span>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </label>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
