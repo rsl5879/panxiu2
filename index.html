@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>盘绣文化</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="video-background">
+        <video id="bg-video" autoplay muted loop playsinline preload="auto" webkit-playsinline x-webkit-airplay="allow">
+            <source src="panjin.mp4" type="video/mp4">
+            <source src="盘锦.mp4" type="video/mp4">
+        </video>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const video = document.getElementById('bg-video');
+            
+            
+            video.loop = true;
+            video.muted = true;
+            video.playsInline = true;
+            
+            
+            video.play().catch(e => {
+                console.log('自动播放被阻止:', e);
+                document.addEventListener('click', function() {
+                    video.play();
+                }, { once: true });
+            });
+
+            
+            video.addEventListener('error', function() {
+                console.log('视频错误:', video.error);
+                setTimeout(() => video.load(), 1000);
+            });
+        });
+    </script>
+
+    <header class="navbar">
+        <nav>
+            <ul class="nav-left">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="mural.html">素材资源</a></li>
+                <li><a href="personal.html">我的素材</a></li>
+            </ul>
+            <div class="nav-right">
+                <a href="register.html" class="auth-btn">注册</a>
+                <a href="login.html" class="auth-btn">登录</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="center-search">
+        <div class="title-container">
+            <h1 class="main-title">土族盘绣数字资源库</h1>
+        </div>
+        <div class="search-container">
+            <div class="search-wrapper">
+                <input type="text" id="search-input" placeholder="搜索盘绣图案、技法..." value="">
+                <button id="search-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <script>
+            document.getElementById('search-btn').addEventListener('click', function() {
+                const keyword = document.getElementById('search-input').value.trim();
+                if(keyword) {
+                    window.location.href = `mural.html?search=${encodeURIComponent(keyword)}`;
+                }
+            });
+            document.getElementById('search-input').addEventListener('keypress', function(e) {
+                if(e.key === 'Enter') {
+                    document.getElementById('search-btn').click();
+                }
+            });
+        </script>
+    </div>
+
+    <style>
+        .title-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .main-title {
+            color: white;
+            font-size: 3rem;
+            font-weight: 800;
+            font-family: 'Microsoft YaHei', sans-serif;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.8);
+            margin-bottom: 150px;
+            letter-spacing: 3px;
+            animation: fadeIn 1.5s ease-out;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 0 20px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #6a11cb, #2575fc);
+            border-radius: 3px;
+            animation: underlineGrow 1s ease-out 1.5s forwards;
+            opacity: 0;
+        }
+        
+        @keyframes underlineGrow {
+            from { width: 0; opacity: 0; }
+            to { width: 150px; opacity: 1; }
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(255,255,255,0.3), 0 6px 15px rgba(0,0,0,0.9); }
+            to { text-shadow: 0 0 20px rgba(255,255,255,0.6), 0 6px 20px rgba(0,0,0,1); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .search-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            max-width: 600px;
+            z-index: 10;
+        }
+        
+        .search-wrapper {
+            display: flex;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 40px;
+            padding: 8px 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        #search-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 12px 15px;
+            font-size: 16px;
+            outline: none;
+            color: #333;
+        }
+        
+        #search-btn {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+        }
+        
+        #search-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.4);
+        }
+        
+        .navbar {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-left li a {
+            position: relative;
+            padding: 15px 20px;
+        }
+        
+        .nav-left li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #6a11cb, #2575fc);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-left li a:hover::after {
+            width: 70%;
+        }
+        
+        .auth-btn {
+            padding: 10px 20px;
+            border-radius: 25px;
+            background: linear-gradient(90deg, #6a11cb, #2575fc);
+            margin-left: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .auth-btn:hover {
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.4);
+        }
+        
+        .video-background video {
+            min-width: 100%; 
+            min-height: 100%;

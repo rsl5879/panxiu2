@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>素材下载 - 盘绣文化</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f5f0;
+            color: #5c4a37;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            padding: 15px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 30px;
+            margin-right: 10px;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            margin-right: 15px;
+            overflow: hidden;
+            border: 2px solid white;
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            position: fixed;
+            left: 0;
+            top: 70px;
+            bottom: 0;
+            box-shadow: 2px 0 15px rgba(0,0,0,0.05);
+            padding: 20px 0;
+            z-index: 900;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            color: #5c4a37;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+        
+        .sidebar-menu li a:hover, 
+        .sidebar-menu li a.active {
+            background-color: rgba(212, 168, 106, 0.1);
+            border-left-color: #d4a86a;
+            color: #8d6e63;
+        }
+        
+        .sidebar-menu li a i {
+            margin-right: 12px;
+            font-size: 18px;
+        }
+        
+        .content {
+            margin-left: 250px;
+            padding: 100px 40px 40px;
+            min-height: 100vh;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee7dd;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            color: #5c4a37;
+            position: relative;
+        }
+        
+        .page-title:after {
+            content: '';
+            position: absolute;
+            bottom: -16px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(to right, #d4a86a, #8d6e63);
+        }
+        
+        
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .download-item {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+            border: 1px solid rgba(212, 168, 106, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .download-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .download-image {
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .download-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .download-item:hover .download-image img {
+            transform: scale(1.05);
+        }
+        
+        .download-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #d4a86a;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .download-info {
+            padding: 20px;
+        }
+        
+        .download-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #5c4a37;
+        }
+        
+        .download-desc {
+            color: #8d6e63;
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .download-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            color: #8d6e63;
+        }
+        
+        .download-date {
+            display: flex;
+            align-items: center;
+        }
+        
+        .download-date i {
+            margin-right: 5px;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background: linear-gradient(to right, #d4a86a, #c99646);
+            color: white;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .download-btn:hover {
+            background: linear-gradient(to right, #c99646, #b88435);
+            box-shadow: 0 5px 15px rgba(212, 168, 106, 0.3);
+        }
+        
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 200px;
+            }
+            .content {
+                margin-left: 200px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .content {
+                margin-left: 0;
+                padding-top: 80px;
+            }
+            
+            .download-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="navbar">
+        <nav>
+            <a href="index.html" class="logo">
+                <img src="images/logo.png" alt="盘绣文化">
+                盘绣文化
+            </a>
+            <div class="user-menu">
+                <div class="user-avatar">
+                    <img src="images/user-avatar.jpg" alt="用户头像">
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="sidebar">
+        <ul class="sidebar-menu">
+            <li><a href="personal.html"><i class="fas fa-user-circle"></i> 个人中心</a></li>
+            <li><a href="orders.html"><i class="fas fa-clipboard-list"></i> 我的订单</a></li>
+            <li><a href="downloads.html" class="active"><i class="fas fa-download"></i> 素材下载</a></li>
+            <li><a href="invoices.html"><i class="fas fa-file-invoice"></i> 我的发票</a></li>
+            <li><a href="settings.html"><i class="fas fa-cog"></i> 设置</a></li>
+        </ul>
+    </div>
+    
+    <div class="content">
+        <div class="page-header">
+            <h1 class="page-title"><i class="fas fa-download"></i> 素材下载</h1>
+        </div>
+        
+        <div class="download-grid">
+            <!-- 下载项目1 -->
+            <div class="download-item">
+                <div class="download-image">
+                    <img src="1太阳花/太阳花17_CocoAI_20250614_181514_13.png" alt="太阳花图案">
+                    <span class="download-badge">高清</span>
+                </div>
+                <div class="download-info">
+                    <h3 class="download-title">传统八瓣太阳花图案</h3>
+                    <p class="download-desc">高清太阳花盘绣图案，3000x3000像素，PNG透明背景，适合印刷和设计使用。</p>
+                    <div class="download-meta">
+                        <span class="download-date">
+                            <i class="far fa-calendar-alt"></i> 2023-06-10
+                        </span>
+                        <a href="#" class="download-btn">下载</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 下载项目2 -->
+            <div class="download-item">
+                <div class="download-image">
+                    <img src="1太阳花/太阳花19_CocoAI_20250614_181514_11.png" alt="太阳花图案">
+                    <span class="download-badge">矢量</span>
+                </div>
+                <div class="download-info">
+                    <h3 class="download-title">祥云纹样矢量素材包</h3>
+                    <p class="download-desc">包含10种不同风格的祥云纹样矢量图，AI/EPS/SVG格式，可无限放大不失真。</p>
+                    <div class="download-meta">
+                        <span class="download-date">
+                            <i class="far fa-calendar-alt"></i> 2023-06-05
+                        </span>
+                        <a href="#" class="download-btn">下载</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 下载项目3 -->
+            <div class="download-item">
+                <div class="download-image">
+                    <img src="1太阳花/太阳花20_CocoAI_20250614_181514_7.png" alt="太阳花图案">
+                    <span class="download-badge">套件</span>
+                </div>
+                <div class="download-info">
+                    <h3 class="download-title">富贵不断头组合图案套件</h3>
+                    <p class="download-desc">完整富贵不断头盘绣图案套件，包含PSD分层文件和JPG预览图。</p>
+                    <div class="download-meta">
+                        <span class="download-date">
+                            <i class="far fa-calendar-alt"></i> 2023-05-28
+                        </span>
+                        <a href="#" class="download-btn">下载</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 下载项目4 -->
+            <div class="download-item">
+                <div class="download-image">
+                    <img src="1太阳花/太阳花22_CocoAI_20250614_181514_10.png" alt="太阳花图案">
+                    <span class="download-badge">高清</span>
+                </div>
+                <div class="download-info">
+                    <h3 class="download-title">神仙魁子传统图案</h3>
+                    <p class="download-desc">高清神仙魁子盘绣图案，4000x4000像素，适合大型印刷和展示。</p>
+                    <div class="download-meta">
+                        <span class="download-date">
+                            <i class="far fa-calendar-alt"></i> 2023-05-20
+                        </span>
+                        <a href="#" class="download-btn">下载</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

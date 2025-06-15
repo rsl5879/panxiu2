@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的订单 - 盘绣文化</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f5f0;
+            color: #5c4a37;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            padding: 15px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 30px;
+            margin-right: 10px;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            margin-right: 15px;
+            overflow: hidden;
+            border: 2px solid white;
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            position: fixed;
+            left: 0;
+            top: 70px;
+            bottom: 0;
+            box-shadow: 2px 0 15px rgba(0,0,0,0.05);
+            padding: 20px 0;
+            z-index: 900;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            color: #5c4a37;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+        
+        .sidebar-menu li a:hover, 
+        .sidebar-menu li a.active {
+            background-color: rgba(212, 168, 106, 0.1);
+            border-left-color: #d4a86a;
+            color: #8d6e63;
+        }
+        
+        .sidebar-menu li a i {
+            margin-right: 12px;
+            font-size: 18px;
+        }
+        
+        .content {
+            margin-left: 250px;
+            padding: 100px 40px 40px;
+            min-height: 100vh;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee7dd;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            color: #5c4a37;
+            position: relative;
+        }
+        
+        .page-title:after {
+            content: '';
+            position: absolute;
+            bottom: -16px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(to right, #d4a86a, #8d6e63);
+        }
+        
+       
+        .order-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+            padding: 0;
+            margin-bottom: 25px;
+            border: 1px solid rgba(212, 168, 106, 0.3);
+            overflow: hidden;
+        }
+        
+        .order-header {
+            background: linear-gradient(to right, rgba(212, 168, 106, 0.1), white);
+            padding: 15px 25px;
+            border-bottom: 1px solid #eee7dd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .order-id {
+            font-weight: bold;
+            color: #5c4a37;
+        }
+        
+        .order-date {
+            color: #8d6e63;
+            font-size: 14px;
+        }
+        
+        .order-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .status-completed {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .order-body {
+            padding: 20px 25px;
+        }
+        
+        .order-item {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #eee7dd;
+        }
+        
+        .order-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .item-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-right: 15px;
+            background-color: #f8f5f0;
+        }
+        
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .item-details {
+            flex: 1;
+        }
+        
+        .item-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #5c4a37;
+        }
+        
+        .item-price {
+            color: #8d6e63;
+            font-weight: bold;
+        }
+        
+        .order-footer {
+            padding: 15px 25px;
+            background-color: #f8f5f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .order-total {
+            font-weight: bold;
+            color: #5c4a37;
+        }
+        
+        .order-actions a {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background-color: #d4a86a;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .order-actions a:hover {
+            background-color: #b88435;
+        }
+        
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 200px;
+            }
+            .content {
+                margin-left: 200px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .content {
+                margin-left: 0;
+                padding-top: 80px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="navbar">
+        <nav>
+            <a href="index.html" class="logo">
+                <img src="images/logo.png" alt="盘绣文化">
+                盘绣文化
+            </a>
+            <div class="user-menu">
+                <div class="user-avatar">
+                    <img src="images/user-avatar.jpg" alt="用户头像">
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="sidebar">
+        <ul class="sidebar-menu">
+            <li><a href="personal.html"><i class="fas fa-user-circle"></i> 个人中心</a></li>
+            <li><a href="orders.html" class="active"><i class="fas fa-clipboard-list"></i> 我的订单</a></li>
+            <li><a href="downloads.html"><i class="fas fa-download"></i> 素材下载</a></li>
+            <li><a href="invoices.html"><i class="fas fa-file-invoice"></i> 我的发票</a></li>
+            <li><a href="settings.html"><i class="fas fa-cog"></i> 设置</a></li>
+        </ul>
+    </div>
+    
+    <div class="content">
+        <div class="page-header">
+            <h1 class="page-title"><i class="fas fa-clipboard-list"></i> 我的订单</h1>
+        </div>
+        
+        
+        <div class="order-card">
+            <div class="order-header">
+                <div>
+                    <span class="order-id">订单号: PX20230615001</span>
+                    <span class="order-date">2023-06-15</span>
+                </div>
+                <span class="order-status status-completed">已完成</span>
+            </div>
+            <div class="order-body">
+                <div class="order-item">
+                    <div class="item-image">
+                        <img src="1太阳花/第10页-1七瓣太阳花_CocoAI_20250614_181105_14.png" alt="七瓣太阳花图案">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-title">传统八瓣太阳花图案</div>
+                        <div class="item-price">¥128.00</div>
+                    </div>
+                </div>
+                <div class="order-item">
+                    <div class="item-image">
+                        <img src="1太阳花/第11页-1八瓣太阳花_CocoAI_20250614_181105_16.png" alt="八瓣太阳花图案">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-title">祥云纹样高清素材包</div>
+                        <div class="item-price">¥98.00</div>
+                    </div>
+                </div>
+            </div>
+            <div class="order-footer">
+                <div class="order-total">合计: ¥226.00</div>
+                <div class="order-actions">
+                    <a href="#">查看详情</a>
+                    <a href="#">再次购买</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="order-card">
+            <div class="order-header">
+                <div>
+                    <span class="order-id">订单号: PX20230610001</span>
+                    <span class="order-date">2023-06-10</span>
+                </div>
+                <span class="order-status status-completed">已完成</span>
+            </div>
+            <div class="order-body">
+                <div class="order-item">
+                    <div class="item-image">
+                        <img src="1太阳花/太阳花17_CocoAI_20250614_181514_13.png" alt="太阳花图案">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-title">富贵不断头组合图案</div>
+                        <div class="item-price">¥158.00</div>
+                    </div>
+                </div>
+            </div>
+            <div class="order-footer">
+                <div class="order-total">合计: ¥158.00</div>
+                <div class="order-actions">
+                    <a href="#">查看详情</a>
+                    <a href="#">再次购买</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
